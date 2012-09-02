@@ -1,0 +1,11 @@
+--- usr/share/applications/spideroak-gui.desktop
++++ usr/share/applications/spideroak-gui.desktop
+@@ -3,7 +3,7 @@
+ Encoding=UTF-8
+ Type=Application
+ Name=SpiderOak Backup
+-Comment=SpiderOak Secure Backup and File Sharing Client
++GenericName=Secure Backup and File Sharing
+ Terminal=false
+ Categories=Network;FileTransfer;
+ Icon=spideroak
