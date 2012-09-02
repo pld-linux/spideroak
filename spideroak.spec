@@ -1,7 +1,7 @@
 Summary:	Online multi-platform backup, storage, access, sharing tool
 Name:		spideroak
 Version:	9948
-Release:	0.7
+Release:	0.10
 License:	Proprietary
 Group:		Applications/Networking
 URL:		https://spideroak.com/
@@ -15,19 +15,17 @@ NoSource:	1
 Patch0:		%{name}-desktopfile.patch
 BuildRequires:	python-devel
 BuildRequires:	rpm-utils
-#BuildRequires:	update-desktop-files
-#Requires:	python-asn1
+#Requires:	python-Louie >= 1.1
 #Requires:	python-bsddb3
 #Requires:	python-cerealizer
 #Requires:	python-concurrentloghandler
 #Requires:	python-crypto
-#Requires:	python-louie
-#Requires:	python-nose
+#Requires:	python-nose >= 1.1.1
 #Requires:	python-openssl
-Requires:	python-pycurl
+#Requires:	python-pyasn1 >= 0.1.2
 #Requires:	python-qt4
-Requires:	python-setuptools
-Requires:	python-simplejson
+#Requires:	python-setuptools >= 1:0.6
+#Requires:	python-simplejson >= 2.1.6
 #Requires:	python-transaction
 #Requires:	python-twisted
 #Requires:	python-zc-lockfile
@@ -76,10 +74,12 @@ mv usr/lib/SpiderOak lib
 mv usr/bin .
 mv usr/share/* .
 
+#rm -r lib/simplejson-2.1.6-py*.egg
+#rm -r lib/setuptools-0.6c11-py*.egg
+
 cat <<'EOF' > bin/SpiderOak
 #!/bin/sh
 export LD_LIBRARY_PATH="%{_appdir}:$LD_LIBRARY_PATH"
-expor QT_PLUGIN_PATH=
 export SpiderOak_EXEC_SCRIPT="$0"
 exec %{_appdir}/SpiderOak "$@"
 EOF
@@ -132,4 +132,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/zdaemon-2.0.4-py*.egg
 %{_appdir}/zope.interface-3.6.4-py*.egg
 %{_appdir}/zope.event-3.5.0_1-py*.egg
-
