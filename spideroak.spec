@@ -72,9 +72,9 @@ rpm2cpio $SOURCE | cpio -i -d
 
 %patch0
 
-mv .%{_libdir}/SpiderOak lib
-mv .%{_bindir} .
-mv .%{_datadir}/* .
+mv usr/lib/SpiderOak lib
+mv usr/bin .
+mv usr/share/* .
 
 cat <<'EOF' > bin/SpiderOak
 #!/bin/sh
