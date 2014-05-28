@@ -1,18 +1,17 @@
 Summary:	Online multi-platform backup, storage, access, sharing tool
 Name:		spideroak
-Version:	9948
-Release:	0.10
+Version:	5.1.3
+Release:	0.1
 License:	Proprietary
 Group:		Applications/Networking
-URL:		https://spideroak.com/
 # https://spideroak.com/directdownload?platform=otherlinux&arch=i386
-Source0:	https://spideroak.com/directdownload?platform=fedora&arch=i386#/%{name}-%{version}.i386.rpm
-# NoSource0-md5:	36ceccb84dacec4aa1aa999ca0629e67
+Source0:	https://spideroak.com/directdownload?platform=fedora&arch=i386&/%{name}-%{version}.i386.rpm
+# NoSource0-md5:	9a1d967b0ca68663427e276513a823a0
 NoSource:	0
-Source1:	https://spideroak.com/directdownload?platform=fedora&arch=x86_64#/%{name}-%{version}.x86_64.rpm
-# NoSource1-md5:	4ec6cee6ec6cb9083c10b29aaf8278f8
+Source1:	https://spideroak.com/directdownload?platform=fedora&arch=x86_64&/%{name}-%{version}.x86_64.rpm
+# NoSource1-md5:	a69e234ee167d93b1c25d4a63c2fdcae
 NoSource:	1
-Patch0:		%{name}-desktopfile.patch
+URL:		https://spideroak.com/
 BuildRequires:	python-devel
 BuildRequires:	rpm-utils
 #Requires:	python-Louie >= 1.1
@@ -68,15 +67,14 @@ SOURCE=%{SOURCE1}
 %endif
 rpm2cpio $SOURCE | cpio -i -d
 
-%patch0
-
-mv usr/lib/SpiderOak lib
+mv opt/SpiderOak/lib lib
 mv usr/bin .
 mv usr/share/* .
 
 #rm -r lib/simplejson-2.1.6-py*.egg
 #rm -r lib/setuptools-0.6c11-py*.egg
 
+mv bin/SpiderOak SpiderOak.sh
 cat <<'EOF' > bin/SpiderOak
 #!/bin/sh
 export LD_LIBRARY_PATH="%{_appdir}:$LD_LIBRARY_PATH"
@@ -90,7 +88,6 @@ EOF
 ln -sf SpiderOak lib/library.zip
 ln -sf SpiderOak lib/py
 
-# you'll need this if you cp -a complete dir in source
 # cleanup backups after patching
 find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 
@@ -108,27 +105,36 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/SpiderOak
-%{_desktopdir}/spideroak.desktop
-%{_pixmapsdir}/spideroak.png
+%{_desktopdir}/SpiderOak.desktop
+%{_pixmapsdir}/SpiderOak.png
+%{_pixmapsdir}/SpiderOakGlobalSync.png
 %dir %{_appdir}
 %attr(755,root,root) %{_appdir}/SpiderOak
 %attr(755,root,root) %{_appdir}/inotify_dir_watcher
 %{_appdir}/library.zip
 %{_appdir}/py
 %attr(755,root,root) %{_appdir}/*.so*
+%dir %{_appdir}/plugins
+%dir %{_appdir}/plugins/systemtrayicon
+%{_appdir}/plugins/systemtrayicon/libsni-qt.so
+
+# mixed .so and .py files, let install file permissions decide
+%defattr(-,root,root,-)
+%{_appdir}/BTrees-4.0.5-py*.egg
+%{_appdir}/Babel-0.9.6-py*.egg
 %{_appdir}/Louie-1.1-py*.egg
 %{_appdir}/SpideroakVersionMatcher-1.1-py*.egg
 %{_appdir}/Twisted-10.2.0-py*.egg
-%{_appdir}/ZConfig-2.9.0-py*.egg
-%{_appdir}/ZODB3-3.10.3-py*.egg
-%{_appdir}/nose-1.1.1-py*.egg
-%{_appdir}/py_bcrypt-0.2-py*.egg
-%{_appdir}/pyasn1-0.0.13-py*.egg
+%{_appdir}/ZConfig-3.0.3-py*.egg
+%{_appdir}/ZODB-4.0.0a4-py*.egg
+%{_appdir}/nose-1.3.0-py*.egg
+%{_appdir}/persistent-4.0.6-py*.egg
+%{_appdir}/py_bcrypt-0.3-py*.egg
+%{_appdir}/pyasn1-0.1.6-py*.egg
 %{_appdir}/pycrypto-2.3-py*.egg
 %{_appdir}/setuptools-0.6c11-py*.egg
-%{_appdir}/simplejson-2.1.6-py*.egg
-%{_appdir}/transaction-1.1.1-py*.egg
-%{_appdir}/zc.lockfile-1.0.0-py*.egg
-%{_appdir}/zdaemon-2.0.4-py*.egg
-%{_appdir}/zope.interface-3.6.4-py*.egg
-%{_appdir}/zope.event-3.5.0_1-py*.egg
+%{_appdir}/simplejson-3.1.3-py*.egg
+%{_appdir}/transaction-1.4.1-py*.egg
+%{_appdir}/zc.lockfile-1.1.0-py*.egg
+%{_appdir}/zdaemon-4.0.0a1-py*.egg
+%{_appdir}/zope.interface-4.0.5-py*.egg
